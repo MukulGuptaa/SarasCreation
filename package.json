@@ -1,0 +1,32 @@
+{
+  "name": "sarascreation",
+  "version": "1.0.0",
+  "description": "Saras creation backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MukulGuptaa/SarasCreation.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MukulGuptaa/SarasCreation/issues"
+  },
+  "homepage": "https://github.com/MukulGuptaa/SarasCreation#readme",
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "http-status-codes": "^2.3.0",
+    "marked": "^15.0.7",
+    "mongoose": "^8.12.1",
+    "nodemon": "^3.1.9",
+    "sanitize-html": "^2.14.0",
+    "turndown": "^7.2.0",
+    "winston": "^3.17.0",
+    "winston-mongodb": "^6.0.0"
+  }
+}
