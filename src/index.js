@@ -1,11 +1,20 @@
 const express = require('express');
 const { PORT } = require('./config/server.config');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const apiRouter = require('./routes');
 const errorHandler = require('./utils/errorHandler');
 const connectToDB = require('./config/db.config');
 
 const app = express();
+
+// CORS configuration
+app.use(cors({
+    origin: '*', // Allow all origins - you can restrict this to your frontend URL in production
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+    credentials: false // Set to true if you need to send cookies
+}));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
