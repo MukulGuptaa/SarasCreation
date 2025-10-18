@@ -39,13 +39,8 @@ async function getProduct(req, res, next){
 
 async function getProducts(req, res, next){
     try{
-
-        const { page = 1, limit = 10, category, subCategory, loom, occassion } = req.query;
-        const filters = {};
-        if (category) filters.category = category;
-        if (subCategory) filters.subCategory = subCategory;
-        if (loom) filters.loom = loom;
-        if (occassion) filters.occassion = occassion;
+        const {page = 1,limit = 10,category,subCategory,loom,occassion} = req.query;
+        const filters = { category, subCategory, loom, occassion };
 
         const productsData = await productsService.getAllProducts(parseInt(page), parseInt(limit), filters);
         return res.status(StatusCodes.OK).json({

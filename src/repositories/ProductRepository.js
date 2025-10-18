@@ -43,21 +43,37 @@ class ProductRepository{
           // Build filter object based on provided filters
           const filterQuery = {};
           
-          if (filters.category) {
-            filterQuery.category = filters.category;
-          }
-          
-          if (filters.subCategory) {
-            filterQuery.subCategory = filters.subCategory;
-          }
-          
-          if (filters.loom) {
-            filterQuery.loom = filters.loom;
-          }
-          
-          if (filters.occassion) {
-            filterQuery.occassion = filters.occassion;
-          }
+          // 🟢 Handle multiple categories
+            if (filters.category) {
+                const categories = Array.isArray(filters.category)
+                ? filters.category
+                : filters.category.split(',');
+                filterQuery.category = { $in: categories.map(c => c.trim()) };
+            }
+
+            // 🟢 Handle multiple subcategories
+            if (filters.subCategory) {
+                const subCategories = Array.isArray(filters.subCategory)
+                ? filters.subCategory
+                : filters.subCategory.split(',');
+                filterQuery.subCategory = { $in: subCategories.map(s => s.trim()) };
+            }
+
+            // 🟢 Handle multiple looms
+            if (filters.loom) {
+                const looms = Array.isArray(filters.loom)
+                ? filters.loom
+                : filters.loom.split(',');
+                filterQuery.loom = { $in: looms.map(l => l.trim()) };
+            }
+
+            // 🟢 Handle multiple occasions
+            if (filters.occassion) {
+                const occassions = Array.isArray(filters.occassion)
+                ? filters.occassion
+                : filters.occassion.split(',');
+                filterQuery.occassion = { $in: occassions.map(o => o.trim()) };
+            }
       
           // Fetch products with pagination and filters
           const products = await Product.find(filterQuery).skip(skip).limit(limit);
