@@ -4,6 +4,7 @@ const { productsController } = require('../../controllers');
 const productsRouter = express.Router();
 
 productsRouter.get('/ping', productsController.pingProductsController);
+productsRouter.get('/filters', productsController.getUniqueFilters);
 productsRouter.get('/:id', productsController.getProduct);
 productsRouter.get('/', productsController.getProducts);
 productsRouter.post('/', productsController.addProducts);

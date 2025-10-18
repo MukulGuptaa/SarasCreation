@@ -146,7 +146,42 @@ class ProductRepository{
           console.error('Error in productRepository.deleteAllProducts:', error);
           throw error;
         }
+    }
+
+
+    async getUniqueFilterValuesWithCounts() {
+        try {
+          const [categories, subcategories, looms, occasions] = await Promise.all([
+            Product.aggregate([
+              { $group: { _id: "$category", count: { $sum: 1 } } },
+              { $project: { _id: 0, name: "$_id", count: 1 } },
+              { $sort: { name: 1 } }
+            ]),
+            Product.aggregate([
+              { $group: { _id: "$subCategory", count: { $sum: 1 } } },
+              { $project: { _id: 0, name: "$_id", count: 1 } },
+              { $sort: { name: 1 } }
+            ]),
+            Product.aggregate([
+              { $group: { _id: "$loom", count: { $sum: 1 } } },
+              { $project: { _id: 0, name: "$_id", count: 1 } },
+              { $sort: { name: 1 } }
+            ]),
+            Product.aggregate([
+              { $group: { _id: "$occassion", count: { $sum: 1 } } },
+              { $project: { _id: 0, name: "$_id", count: 1 } },
+              { $sort: { name: 1 } }
+            ])
+          ]);
+      
+          return { categories, subcategories, looms, occasions };
+        } catch (error) {
+          console.error("Error in productRepository.getUniqueFilterValuesWithCounts:", error);
+          throw error;
+        }
       }
+      
+
 
 }
 

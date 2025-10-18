@@ -95,7 +95,24 @@ async function deleteAllProducts(req, res, next) {
     } catch (error) {
       next(error);
     }
+}
+
+async function getUniqueFilters(req, res, next) {
+    try {
+      const filters = await productsService.getUniqueFilterValuesWithCounts();
+  
+      return res.status(StatusCodes.OK).json({
+        success: true,
+        message: "Successfully fetched unique filter values with counts",
+        error: {},
+        data: filters,
+      });
+    } catch (error) {
+      next(error);
+    }
   }
+  
+  
 
 module.exports = {
     addProducts,
@@ -104,5 +121,6 @@ module.exports = {
     updateProducts,
     deleteProducts,
     pingProductsController,
-    deleteAllProducts
+    deleteAllProducts,
+    getUniqueFilters
 }

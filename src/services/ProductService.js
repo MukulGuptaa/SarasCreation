@@ -41,7 +41,18 @@ class ProductService{
           console.error('Error in productService.deleteAllProducts:', error);
           throw error;
         }
+    }
+
+    async getUniqueFilterValuesWithCounts() {
+        try {
+          const filters = await this.productRespository.getUniqueFilterValuesWithCounts();
+          return filters;
+        } catch (error) {
+          console.error("Error in productService.getUniqueFilterValuesWithCounts:", error);
+          throw error;
+        }
       }
+      
 
 
 }
