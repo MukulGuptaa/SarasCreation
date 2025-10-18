@@ -35,16 +35,35 @@ class ProductRepository{
         }
     }
 
-    async getAllProducts(page = 1, limit = 10) {
+    async getAllProducts(page = 1, limit = 10, filters = {}) {
         try {
           // Calculate skip count
           const skip = (page - 1) * limit;
+          
+          // Build filter object based on provided filters
+          const filterQuery = {};
+          
+          if (filters.category) {
+            filterQuery.category = filters.category;
+          }
+          
+          if (filters.subCategory) {
+            filterQuery.subCategory = filters.subCategory;
+          }
+          
+          if (filters.loom) {
+            filterQuery.loom = filters.loom;
+          }
+          
+          if (filters.occassion) {
+            filterQuery.occassion = filters.occassion;
+          }
       
-          // Fetch products with pagination
-          const products = await Product.find({}).skip(skip).limit(limit);
+          // Fetch products with pagination and filters
+          const products = await Product.find(filterQuery).skip(skip).limit(limit);
       
-          // Get total count for pagination metadata
-          const totalProducts = await Product.countDocuments();
+          // Get total count for pagination metadata (with filters applied)
+          const totalProducts = await Product.countDocuments(filterQuery);
       
           // Send paginated response
           return {
@@ -53,6 +72,7 @@ class ProductRepository{
             page,
             limit,
             totalPages: Math.ceil(totalProducts / limit),
+            filters: filters // Include applied filters in response
           };
       
         } catch (error) {

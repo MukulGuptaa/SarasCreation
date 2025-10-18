@@ -13,8 +13,8 @@ class ProductService{
             
     }
 
-    async getAllProducts(page = 1, limit = 10) {
-        const data = await this.productRespository.getAllProducts(page, limit);
+    async getAllProducts(page = 1, limit = 10, filters = {}) {
+        const data = await this.productRespository.getAllProducts(page, limit, filters);
         return data;
     }
 
