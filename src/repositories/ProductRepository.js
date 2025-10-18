@@ -59,18 +59,6 @@ class ProductRepository{
           throw error;
         }
     }
-
-    // async getAllProducts(){ 
-    //     try{ 
-    //         console.log("hitting in wrong fun");
-    //         const products = await Product.find({}); 
-    //         return products; 
-    //     } 
-    //     catch(error) { 
-    //         console.log(error); 
-    //         throw error; 
-    //     } 
-    // }
       
 
     async getProduct(id){
