@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const apiRouter = require('./routes');
 const errorHandler = require('./utils/errorHandler');
+const mongoose = require('mongoose');
 // const connectToDB = require('./config/db.config');
 const { ATLAS_DB_URL, NODE_ENV } = require('./config/server.config');
 
@@ -20,15 +21,6 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
-
-app.use('/api', apiRouter);
-
-app.get('/ping', (req, res) => {
-    return res.json({message: "Product servive is alive"});
-});
-
-app.use(errorHandler);
-
 
 
 
@@ -50,6 +42,14 @@ app.use((req, res, next) => {
   }
   next();
 });
+
+app.use('/api', apiRouter);
+
+app.get('/ping', (req, res) => {
+    return res.json({message: "Product servive is alive"});
+});
+
+app.use(errorHandler);
 
 
 
