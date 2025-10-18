@@ -4,7 +4,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const apiRouter = require('./routes');
 const errorHandler = require('./utils/errorHandler');
-const connectToDB = require('./config/db.config');
+// const connectToDB = require('./config/db.config');
+const { ATLAS_DB_URL, NODE_ENV } = require('./config/server.config');
 
 const app = express();
 
@@ -28,10 +29,36 @@ app.get('/ping', (req, res) => {
 
 app.use(errorHandler);
 
-app.listen(PORT, async () => {
-    console.log(`Server started at PORT: ${PORT}`);
-    await connectToDB();
+
+
+
+let isConnected = false;
+
+async function connectToDB(){
+    try{
+        await mongoose.connect(ATLAS_DB_URL);
+        isConnected = true;
+        console.log('Connected to mongoDb');
+    }catch(error){
+        console.log('Error connecting to mongoDb: ',error);
+    }
+}
+
+app.use((req, res, next) => {
+  if(!isConnected){
+    connectToDB();
+  }
+  next();
 });
+
+
+
+// app.listen(PORT, async () => {
+//     console.log(`Server started at PORT: ${PORT}`);
+//     // await connectToDB();
+// });
+
+module.exports = app;
 
 
 
