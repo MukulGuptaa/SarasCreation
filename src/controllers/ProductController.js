@@ -82,11 +82,27 @@ async function deleteProducts(req, res, next){
     }
 }
 
+async function deleteAllProducts(req, res, next) {
+    try {
+      const result = await productsService.deleteAllProducts();
+  
+      return res.status(StatusCodes.OK).json({
+        success: true,
+        message: `Successfully deleted ${result.deletedCount} products.`,
+        error: {},
+        data: result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
 module.exports = {
     addProducts,
     getProduct,
     getProducts,
     updateProducts,
     deleteProducts,
-    pingProductsController
+    pingProductsController,
+    deleteAllProducts
 }

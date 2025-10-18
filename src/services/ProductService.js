@@ -33,6 +33,16 @@ class ProductService{
         return product;
     }
 
+    async deleteAllProducts() {
+        try {
+          const result = await this.productRespository.deleteAllProducts();
+          return result;
+        } catch (error) {
+          console.error('Error in productService.deleteAllProducts:', error);
+          throw error;
+        }
+      }
+
 
 }
 

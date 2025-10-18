@@ -101,6 +101,16 @@ class ProductRepository{
         }
     }
 
+    async deleteAllProducts() {
+        try {
+          const result = await Product.deleteMany({});
+          return result; // contains { acknowledged: true, deletedCount: <number> }
+        } catch (error) {
+          console.error('Error in productRepository.deleteAllProducts:', error);
+          throw error;
+        }
+      }
+
 }
 
 module.exports = ProductRepository;
