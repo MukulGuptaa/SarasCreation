@@ -13,11 +13,9 @@ class ProductService{
             
     }
 
-    async getAllProducts(){
-    
-        const products = await this.productRespository.getAllProducts();
-        return products;
-        
+    async getAllProducts(page = 1, limit = 10) {
+        const data = await this.productRespository.getAllProducts(page, limit);
+        return data;
     }
 
     async getProduct(id){

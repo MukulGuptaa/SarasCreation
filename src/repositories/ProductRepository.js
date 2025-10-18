@@ -33,17 +33,45 @@ class ProductRepository{
             throw error;
         }
     }
-    // Category, subcategory, Weavername, WeaverPrice, fabricQuality, designType, 
 
-    async getAllProducts(){
-        try{
-            const products = await Product.find({});
-            return products;
-        } catch(error) {
-            console.log(error);
-            throw error;
+    async getAllProducts(page = 1, limit = 10) {
+        try {
+          // Calculate skip count
+          const skip = (page - 1) * limit;
+      
+          // Fetch products with pagination
+          const products = await Product.find({}).skip(skip).limit(limit);
+      
+          // Get total count for pagination metadata
+          const totalProducts = await Product.countDocuments();
+      
+          // Send paginated response
+          return {
+            products,
+            totalProducts,
+            page,
+            limit,
+            totalPages: Math.ceil(totalProducts / limit),
+          };
+      
+        } catch (error) {
+          console.error(error);
+          throw error;
         }
     }
+
+    // async getAllProducts(){ 
+    //     try{ 
+    //         console.log("hitting in wrong fun");
+    //         const products = await Product.find({}); 
+    //         return products; 
+    //     } 
+    //     catch(error) { 
+    //         console.log(error); 
+    //         throw error; 
+    //     } 
+    // }
+      
 
     async getProduct(id){
         try {

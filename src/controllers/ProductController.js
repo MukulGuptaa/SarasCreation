@@ -39,12 +39,15 @@ async function getProduct(req, res, next){
 
 async function getProducts(req, res, next){
     try{
-        const products = await productsService.getAllProducts();
+
+        const { page = 1, limit = 10 } = req.query;
+
+        const productsData = await productsService.getAllProducts(parseInt(page),parseInt(limit));
         return res.status(StatusCodes.OK).json({
             success: true,
             message: 'Successfully fetched all products',
             error: {},
-            data: products
+            data: productsData
         });
     } catch(error) {
         next(error);
