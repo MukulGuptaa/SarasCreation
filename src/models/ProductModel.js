@@ -26,7 +26,7 @@ const productSchema = new mongoose.Schema({
         required: [true, `Price cannot be empty!`]
     },
     discountPrice : {
-        type: Number,
+        type: String,
         required: [true, `Price cannot be empty!`]
     },
     imageUrl : {
@@ -75,8 +75,12 @@ const productSchema = new mongoose.Schema({
         required: [true, `WeaverPrice cannot be empty!`]
     },
     wholeSalePrice : {
-        type: Number,
+        type: String,
         required: [true, `wholeSalePrice cannot be empty!`]
+    },
+    loom : {
+        type: String,
+        required: [true, `loom field cannot be empty!`]
     },
 });
 

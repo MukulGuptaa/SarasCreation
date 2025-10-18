@@ -26,6 +26,7 @@ class ProductRepository{
                 weaverName: productData.weaverName,
                 weaverPrice: productData.weaverPrice,
                 wholeSalePrice: productData.wholeSalePrice,
+                loom: productData.loom,
             });
             return product;
         } catch(error) {
