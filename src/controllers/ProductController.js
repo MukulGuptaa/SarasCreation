@@ -109,6 +109,19 @@ async function getFilterHierarchy(req, res, next) {
       next(error);
     }
 }
+
+async function getTaggedProducts(req, res, next) {
+    try {
+      const taggedProducts = await productsService.getTaggedProducts();
+      return res.status(StatusCodes.OK).json({
+        success: true,
+        message: "Successfully fetched tagged products",
+        data: taggedProducts
+      });
+    } catch (error) {
+      next(error);
+    }
+}
   
   
 
@@ -121,4 +134,5 @@ module.exports = {
     pingProductsController,
     deleteAllProducts,
     getFilterHierarchy,
+    getTaggedProducts,
 }

@@ -27,6 +27,7 @@ class ProductRepository{
                 weaverPrice: productData.weaverPrice,
                 wholeSalePrice: productData.wholeSalePrice,
                 loom: productData.loom,
+                tag: productData.tag,
             });
             return product;
         } catch(error) {
@@ -212,6 +213,27 @@ class ProductRepository{
           throw error;
         }
     }
+
+    async getTaggedProducts() {
+        try {
+          const products = await Product.find({
+            tag: { $exists: true, $ne: "" }
+          }).select("name description imageUrl tag"); // select only needed fields
+      
+          // Transform response
+          return products.map((product) => ({
+            id: product._id,
+            title: product.name,
+            description: product.description,
+            image: product.imageUrl,
+            badge: product.tag
+          }));
+        } catch (error) {
+          console.error("Error in ProductRepository.getTaggedProducts:", error);
+          throw error;
+        }
+      }
+      
       
 
 

@@ -47,6 +47,10 @@ class ProductService{
         return await this.productRespository.getFiltersHierarchy();
     }
       
+    async getTaggedProducts() {
+        return await this.productRespository.getTaggedProducts();
+    }
+      
 
 
 }

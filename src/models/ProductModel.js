@@ -82,6 +82,10 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: [true, `loom field cannot be empty!`]
     },
+    tag: {
+        type: String,
+        default: "",
+    },
 });
 
 const Product = mongoose.model('Product', productSchema); // model Object for doing crud operations in db
