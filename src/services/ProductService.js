@@ -43,15 +43,9 @@ class ProductService{
         }
     }
 
-    async getUniqueFilterValuesWithCounts() {
-        try {
-          const filters = await this.productRespository.getUniqueFilterValuesWithCounts();
-          return filters;
-        } catch (error) {
-          console.error("Error in productService.getUniqueFilterValuesWithCounts:", error);
-          throw error;
-        }
-      }
+    async getFiltersHierarchy() {
+        return await this.productRespository.getFiltersHierarchy();
+    }
       
 
 

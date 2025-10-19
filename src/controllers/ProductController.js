@@ -97,20 +97,18 @@ async function deleteAllProducts(req, res, next) {
     }
 }
 
-async function getUniqueFilters(req, res, next) {
+async function getFilterHierarchy(req, res, next) {
     try {
-      const filters = await productsService.getUniqueFilterValuesWithCounts();
-  
+      const filters = await productsService.getFiltersHierarchy();
       return res.status(StatusCodes.OK).json({
         success: true,
-        message: "Successfully fetched unique filter values with counts",
-        error: {},
-        data: filters,
+        message: 'Successfully fetched filters hierarchy',
+        data: filters
       });
     } catch (error) {
       next(error);
     }
-  }
+}
   
   
 
@@ -122,5 +120,5 @@ module.exports = {
     deleteProducts,
     pingProductsController,
     deleteAllProducts,
-    getUniqueFilters
+    getFilterHierarchy,
 }

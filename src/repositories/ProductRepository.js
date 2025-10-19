@@ -149,37 +149,69 @@ class ProductRepository{
     }
 
 
-    async getUniqueFilterValuesWithCounts() {
+    async getFiltersHierarchy() {
         try {
-          const [categories, subcategories, looms, occasions] = await Promise.all([
-            Product.aggregate([
-              { $group: { _id: "$category", count: { $sum: 1 } } },
-              { $project: { _id: 0, name: "$_id", count: 1 } },
-              { $sort: { name: 1 } }
-            ]),
-            Product.aggregate([
-              { $group: { _id: "$subCategory", count: { $sum: 1 } } },
-              { $project: { _id: 0, name: "$_id", count: 1 } },
-              { $sort: { name: 1 } }
-            ]),
-            Product.aggregate([
-              { $group: { _id: "$loom", count: { $sum: 1 } } },
-              { $project: { _id: 0, name: "$_id", count: 1 } },
-              { $sort: { name: 1 } }
-            ]),
-            Product.aggregate([
-              { $group: { _id: "$occassion", count: { $sum: 1 } } },
-              { $project: { _id: 0, name: "$_id", count: 1 } },
-              { $sort: { name: 1 } }
-            ])
+          const result = await Product.aggregate([
+            {
+              $facet: {
+                categorySubcategory: [
+                  {
+                    $group: {
+                      _id: { category: "$category", subCategory: "$subCategory" },
+                      count: { $sum: 1 }
+                    }
+                  },
+                  {
+                    $group: {
+                      _id: "$_id.category",
+                      subcategories: {
+                        $push: { name: "$_id.subCategory", count: "$count" }
+                      },
+                      totalCount: { $sum: "$count" }
+                    }
+                  },
+                  {
+                    $project: {
+                      _id: 0,
+                      category: "$_id",
+                      totalCount: 1,
+                      subcategories: {
+                        $sortArray: { input: "$subcategories", sortBy: { count: -1 } }
+                      }
+                    }
+                  },
+                  { $sort: { totalCount: -1 } } // popular categories first
+                ],
+    
+                looms: [
+                  {
+                    $group: { _id: "$loom", count: { $sum: 1 } }
+                  },
+                  {
+                    $project: { _id: 0, name: "$_id", count: 1 }
+                  },
+                  { $sort: { count: -1 } } // popular looms first
+                ],
+    
+                occasions: [
+                  {
+                    $group: { _id: "$occassion", count: { $sum: 1 } }
+                  },
+                  {
+                    $project: { _id: 0, name: "$_id", count: 1 }
+                  },
+                  { $sort: { count: -1 } } // popular occasions first
+                ]
+              }
+            }
           ]);
-      
-          return { categories, subcategories, looms, occasions };
+    
+          return result[0];
         } catch (error) {
-          console.error("Error in productRepository.getUniqueFilterValuesWithCounts:", error);
+          console.error("Error in ProductRepository.getFiltersHierarchy:", error);
           throw error;
         }
-      }
+    }
       
 
 
