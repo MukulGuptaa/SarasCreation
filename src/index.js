@@ -13,7 +13,7 @@ const app = express();
 // CORS configuration
 app.use(cors({
     origin: [
-      'https://saree-ecommerce-zeta.vercel.app', // ✅ your frontend domain
+      'https://saras-silk-creation.vercel.app/', // ✅ your frontend domain
     ], // Allow all origins - you can restrict this to your frontend URL in production
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
