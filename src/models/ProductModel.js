@@ -35,7 +35,6 @@ const productSchema = new mongoose.Schema({
     },
     occassion : { //
         type: String,
-        enum: ['wedding', 'dailyWear', 'gifting', 'festival'],
         required: [true, `Occasion cannot be empty!`]
     },
     quantity : {
