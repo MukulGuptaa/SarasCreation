@@ -85,6 +85,10 @@ const productSchema = new mongoose.Schema({
         type: String,
         default: "",
     },
+    wholeSaleSiteShowPrice: {
+        type: Number,
+        required: [true, `wholeSaleSiteShowPrice cannot be empty!`]
+    }
 });
 
 const Product = mongoose.model('Product', productSchema); // model Object for doing crud operations in db

@@ -28,6 +28,7 @@ class ProductRepository{
                 wholeSalePrice: productData.wholeSalePrice,
                 loom: productData.loom,
                 tag: productData.tag,
+                wholeSaleSiteShowPrice: productData.wholeSaleSiteShowPrice,
             });
             return product;
         } catch(error) {
