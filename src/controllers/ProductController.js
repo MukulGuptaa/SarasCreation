@@ -39,8 +39,25 @@ async function getProduct(req, res, next){
 
 async function getProducts(req, res, next){
     try{
-        const {page = 1,limit = 10,category,subCategory,loom,occassion} = req.query;
-        const filters = { category, subCategory, loom, occassion };
+        const { page = 1, limit = 10 } = req.query;
+        
+        // Parse filters from query string
+        let filters = {};
+        
+        // 🟢 Handle nested category-subcategory structure
+        if (req.query.filters) {
+            try {
+                // If filters is sent as JSON string in query params
+                filters = JSON.parse(req.query.filters);
+            } catch (parseError) {
+                return res.status(StatusCodes.BAD_REQUEST).json({
+                    success: false,
+                    message: 'Invalid filters format. Expected JSON string.',
+                    error: { details: parseError.message },
+                    data: {}
+                });
+            }
+        }
 
         const productsData = await productsService.getAllProducts(parseInt(page), parseInt(limit), filters);
         return res.status(StatusCodes.OK).json({
