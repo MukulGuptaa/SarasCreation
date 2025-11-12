@@ -32,7 +32,7 @@ class ProductRepository{
             });
             return product;
         } catch(error) {
-            console.log(error);
+            // console.log(error);
             throw error;
         }
     }
@@ -78,7 +78,7 @@ class ProductRepository{
           filterQuery.occassion = { $in: filters.occassion.map(o => o.trim()) };
         }
     
-        console.log('Final MongoDB Query:', JSON.stringify(filterQuery, null, 2));
+        // console.log('Final MongoDB Query:', JSON.stringify(filterQuery, null, 2));
     
         // Fetch products with pagination and filters
         const products = await Product.find(filterQuery)
@@ -112,7 +112,7 @@ class ProductRepository{
             }
             return product;
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             throw error;
         }
     }
@@ -126,7 +126,7 @@ class ProductRepository{
             }
             return product;
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             throw error;
         }
     }
@@ -139,7 +139,7 @@ class ProductRepository{
             }
             return product;
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             throw error;
         }
     }
