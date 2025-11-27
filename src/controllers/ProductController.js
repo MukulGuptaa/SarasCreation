@@ -43,12 +43,14 @@ async function getProducts(req, res, next){
         
         // Parse filters from query string
         let filters = {};
+        let loom = [];
+        let occassion = [];
         
         // 🟢 Handle nested category-subcategory structure
-        if (req.body.filters) {
+        if (req.query.filters) {
             try {
                 // If filters is sent as JSON string in query params
-                filters = req.body.filters; 
+                filters = JSON.parse(req.query.filters); 
                 
             } catch (parseError) {
                 return res.status(StatusCodes.BAD_REQUEST).json({
@@ -60,7 +62,28 @@ async function getProducts(req, res, next){
             }
         }
 
-        const productsData = await productsService.getAllProducts(parseInt(page), parseInt(limit), filters);
+        // Parse loom array if sent
+        if (req.query.loom) {
+            try {
+                loom = JSON.parse(req.query.loom); // <-- converts '["Handloom"]' → ["Handloom"]
+            } catch {
+                loom = [req.query.loom]; // fallback if user sends ?loom=Handloom
+            }
+        }
+
+        // Parse occassion array if sent
+        if (req.query.occassion) {
+            try {
+                occassion = JSON.parse(req.query.occassion);
+            } catch {
+                occassion = [req.query.occassion];
+            }
+        }
+
+        console.log("loom", loom);
+        console.log("occassion", occassion);
+
+        const productsData = await productsService.getAllProducts(parseInt(page), parseInt(limit), filters, loom, occassion);
         return res.status(StatusCodes.OK).json({
             success: true,
             message: 'Successfully fetched all products',
