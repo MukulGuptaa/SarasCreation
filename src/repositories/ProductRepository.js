@@ -66,15 +66,6 @@ class ProductRepository{
             filterQuery.$or = categoryConditions;
           }
         }
-
-        if (filters.loom && Array.isArray(filters.loom) && filters.loom.length > 0) {
-          filterQuery.loom = { $in: filters.loom.map(l => l.trim()) };
-        }
-  
-        // 🟢 Handle occasion filter (applies as AND to the above results)
-        if (filters.occassion && Array.isArray(filters.occassion) && filters.occassion.length > 0) {
-          filterQuery.occassion = { $in: filters.occassion.map(o => o.trim()) };
-        }
     
         // Fetch products
         const products = await Product.find(filterQuery)
