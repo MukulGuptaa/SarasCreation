@@ -37,42 +37,56 @@ class ProductRepository{
         }
     }
 
-    async getAllProducts(page = 1, limit = 10, filters = []) {
+    async getAllProducts(page = 1, limit = 10, filters = {}) {
       try {
         const skip = (page - 1) * limit;
         
+        // Build filter query
         let filterQuery = {};
-    
-        // Handle hierarchical Category-Subcategory filters
-        if (Array.isArray(filters) && filters.length > 0) {
-          const categoryConditions = filters.map(categoryFilter => {
+        
+        // 🟢 Handle hierarchical category-subcategory structure
+        if (filters.categories && Array.isArray(filters.categories) && filters.categories.length > 0) {
+          const categoryConditions = filters.categories.map(categoryFilter => {
             const condition = { category: categoryFilter.name.trim() };
-    
-            if (
-              Array.isArray(categoryFilter.subCategories) &&
-              categoryFilter.subCategories.length > 0
-            ) {
-              condition.subCategory = {
-                $in: categoryFilter.subCategories.map(sc => sc.trim()),
+            
+            // If subcategories are specified AND not empty, add them to the condition
+            if (categoryFilter.subCategories && Array.isArray(categoryFilter.subCategories) && categoryFilter.subCategories.length > 0) {
+              condition.subCategory = { 
+                $in: categoryFilter.subCategories.map(sc => sc.trim()) 
               };
             }
-    
+            // If subCategories is empty array, it means get ALL subcategories for that category
+            
             return condition;
           });
-    
+          
+          // Use $or to combine all category conditions
           if (categoryConditions.length === 1) {
             Object.assign(filterQuery, categoryConditions[0]);
           } else {
             filterQuery.$or = categoryConditions;
           }
         }
+  
+        // 🟢 Handle loom filter (applies as AND to the above results)
+        if (filters.loom && Array.isArray(filters.loom) && filters.loom.length > 0) {
+          filterQuery.loom = { $in: filters.loom.map(l => l.trim()) };
+        }
+  
+        // 🟢 Handle occasion filter (applies as AND to the above results)
+        if (filters.occassion && Array.isArray(filters.occassion) && filters.occassion.length > 0) {
+          filterQuery.occassion = { $in: filters.occassion.map(o => o.trim()) };
+        }
     
-        // Fetch products
+        // console.log('Final MongoDB Query:', JSON.stringify(filterQuery, null, 2));
+    
+        // Fetch products with pagination and filters
         const products = await Product.find(filterQuery)
           .sort({ wholeSaleSiteShowPrice: 1 })
           .skip(skip)
           .limit(limit);
     
+        // Get total count for pagination metadata
         const totalProducts = await Product.countDocuments(filterQuery);
     
         return {
@@ -81,14 +95,14 @@ class ProductRepository{
           page,
           limit,
           totalPages: Math.ceil(totalProducts / limit),
-          filters
+          filters: filters
         };
     
       } catch (error) {
-        console.error("Error in getAllProducts:", error);
+        console.error('Error in getAllProducts:', error);
         throw error;
       }
-    }
+  } 
 
     async getProduct(id){
         try {
