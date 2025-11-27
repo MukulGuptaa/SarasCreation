@@ -7,7 +7,7 @@ productsRouter.get('/ping', productsController.pingProductsController);
 productsRouter.get('/filters', productsController.getFilterHierarchy);
 productsRouter.get('/tags', productsController.getTaggedProducts);
 productsRouter.get('/:id', productsController.getProduct);
-productsRouter.get('/', productsController.getProducts);
+productsRouter.post('/', productsController.getProducts);
 productsRouter.post('/', productsController.addProducts);
 productsRouter.delete('/:id', productsController.deleteProducts);
 productsRouter.delete('/', productsController.deleteAllProducts);

@@ -45,10 +45,11 @@ async function getProducts(req, res, next){
         let filters = {};
         
         // 🟢 Handle nested category-subcategory structure
-        if (req.query.filters) {
+        if (req.body.filters) {
             try {
                 // If filters is sent as JSON string in query params
-                filters = JSON.parse(req.query.filters);
+                filters = req.body.filters; 
+                
             } catch (parseError) {
                 return res.status(StatusCodes.BAD_REQUEST).json({
                     success: false,
