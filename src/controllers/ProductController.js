@@ -39,6 +39,7 @@ async function getProduct(req, res, next){
 
 async function getProducts(req, res, next){
     try{
+        throw new Error("test error");
         const { page = 1, limit = 10 } = req.query;
         
         // Parse filters from query string
