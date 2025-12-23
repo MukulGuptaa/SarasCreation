@@ -1,4 +1,5 @@
 module.exports = {
     ProductsService : require('./ProductService'),
-    CartService: require('./CartService')
+    CartService: require('./CartService'),
+    CalendarService: require('./CalendarService')
 };
